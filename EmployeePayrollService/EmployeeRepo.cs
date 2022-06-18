@@ -220,5 +220,45 @@ namespace EmployeePayrollService
                 }
             }
         }
+
+        public void AggregateAndGrouping()
+        {
+            string query = @"select gender, sum(BasicPay) TotalSalary, max(BasicPay) MaxSalary, min(BasicPay) MinSalary, avg(BasicPay) AvgSalary, count(BasicPay) CountGender from employee_payroll group by Gender";
+
+            SqlCommand sqlCommand = new SqlCommand(query, connection);
+
+            connection.Open();
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            if (sqlDataReader.HasRows)
+            {
+                //Reading next record
+                while (sqlDataReader.Read())
+                {
+                    EmployeeModel employeeModel = new EmployeeModel();
+
+                    employeeModel.Gender = Convert.ToChar(sqlDataReader.GetString(0));
+                    employeeModel.TotalSalary = sqlDataReader.GetDouble(1);
+                    employeeModel.MaxSalary = sqlDataReader.GetDouble(2);
+                    employeeModel.MinSalary = sqlDataReader.GetDouble(3);
+                    employeeModel.AvgSalary = sqlDataReader.GetDouble(4);
+                    employeeModel.CountGender = sqlDataReader.GetInt32(5);
+
+                    Console.WriteLine("{0} {1} {2} {3} {4} {5}", employeeModel.Gender, employeeModel.TotalSalary, employeeModel.MaxSalary, employeeModel.MinSalary, employeeModel.AvgSalary, employeeModel.CountGender);
+                    Console.WriteLine();
+                }
+
+                //Closing the database reader object
+                sqlDataReader.Close();
+
+                //Closes the connection to the database
+                connection.Close();
+            }
+            else
+            {
+                Console.WriteLine("No records");
+            }
+        }
     }
 }

@@ -22,5 +22,11 @@ namespace EmployeePayrollService
         public DateTime StartDate { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+
+        public double TotalSalary { get; set; }
+        public double AvgSalary { get; set; }
+        public double MaxSalary { get; set; }
+        public double MinSalary { get; set; }
+        public int CountGender { get; set; }
     }
 }
