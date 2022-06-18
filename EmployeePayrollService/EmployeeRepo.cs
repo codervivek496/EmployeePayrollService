@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,54 @@ namespace EmployeePayrollService
 
                     //Closes the connection to the database
                     connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                //Closes the connection to the database
+                connection.Close();
+            }
+        }
+
+        public bool AddEmployee(EmployeeModel employeeModel)
+        {
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand sqlCommand = new SqlCommand("SPAddEmployeeDetails", connection);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@EmployeeName", employeeModel.EmployeeName);
+                    sqlCommand.Parameters.AddWithValue("@PhoneNumber", employeeModel.PhoneNumber);
+                    sqlCommand.Parameters.AddWithValue("@Address", employeeModel.Address);
+                    sqlCommand.Parameters.AddWithValue("@Department", employeeModel.Department);
+                    sqlCommand.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    sqlCommand.Parameters.AddWithValue("@BasicPay", employeeModel.BasicPay);
+                    sqlCommand.Parameters.AddWithValue("@Deductions", employeeModel.Deductions);
+                    sqlCommand.Parameters.AddWithValue("@TaxablePay", employeeModel.TaxablePay);
+                    sqlCommand.Parameters.AddWithValue("@Tax", employeeModel.Tax);
+                    sqlCommand.Parameters.AddWithValue("@NetPay", employeeModel.NetPay);
+                    sqlCommand.Parameters.AddWithValue("@StartDate", DateTime.Now);
+                    sqlCommand.Parameters.AddWithValue("@City", employeeModel.City);
+                    sqlCommand.Parameters.AddWithValue("@Country", employeeModel.Country);
+
+                    //Opens the database connection with property settings specified
+                    connection.Open();
+
+                    var result = sqlCommand.ExecuteNonQuery();
+
+                    //Closes the connection to the database
+                    connection.Close();
+
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             catch (Exception e)

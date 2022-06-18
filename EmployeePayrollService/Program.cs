@@ -8,6 +8,7 @@
             EmployeeRepo employeeRepo = new EmployeeRepo();
 
             Console.WriteLine("1. Get details from database");
+            Console.WriteLine("2. Add details to database");
             Console.WriteLine("0. Exit");
             Console.Write("Enter your choice : ");
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -16,11 +17,48 @@
                 case 1:
                     employeeRepo.GetEmployees();
                     break;
+                case 2:
+                    AddDataToDataBase();
+                    employeeRepo.GetEmployees();
+                    break;
                 case 0:
                     return;
                 default:
                     Console.WriteLine("Please enter correct choice");
                     break;
+            }
+        }
+
+        //For adding the data into the database
+        public static void AddDataToDataBase()
+        {
+            EmployeeModel employeeModel = new EmployeeModel();
+
+            employeeModel.EmployeeName = "John";
+            employeeModel.Gender = Convert.ToChar("M");
+            employeeModel.PhoneNumber = "9512367409";
+            employeeModel.Department = "Marketing";
+            employeeModel.Address = "Andheri";
+            employeeModel.BasicPay = 50000;
+            employeeModel.Deductions = 500;
+            employeeModel.TaxablePay = 1000;
+            employeeModel.Tax = 5000;
+            employeeModel.NetPay = 45000;
+            employeeModel.StartDate = Convert.ToDateTime("2021-06-14");
+            employeeModel.City = "Mumbai";
+            employeeModel.Country = "India";
+
+            EmployeeRepo employeeRepo = new EmployeeRepo();
+
+            bool result = employeeRepo.AddEmployee(employeeModel);
+
+            if (result == true)
+            {
+                Console.WriteLine("Data is inserted into database");
+            }
+            else
+            {
+                Console.WriteLine("Data is not inserted into database");
             }
         }
     }
