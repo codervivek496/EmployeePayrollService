@@ -169,5 +169,56 @@ namespace EmployeePayrollService
                 connection.Close();
             }
         }
+
+        public void GetEmployeesInDateRange()
+        {
+            using (connection)
+            {
+                string query = @"select * from employee_payroll where StartDate between cast('2019-04-12' as date) and getdate()";
+
+                SqlCommand sqlCommand = new SqlCommand(query, connection);
+
+                connection.Open();
+
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+                    //Reading next record
+                    while (sqlDataReader.Read())
+                    {
+                        EmployeeModel employeeModel = new EmployeeModel();
+
+                        employeeModel.EmployeeId = sqlDataReader.GetInt32(0);
+                        employeeModel.EmployeeName = sqlDataReader.GetString(1);
+                        employeeModel.PhoneNumber = sqlDataReader.GetString(2);
+                        employeeModel.Address = sqlDataReader.GetString(3);
+                        employeeModel.Department = sqlDataReader.GetString(4);
+                        employeeModel.Gender = Convert.ToChar(sqlDataReader.GetString(5));
+                        employeeModel.BasicPay = sqlDataReader.GetDouble(6);
+                        employeeModel.Deductions = sqlDataReader.GetDouble(7);
+                        employeeModel.TaxablePay = sqlDataReader.GetDouble(8);
+                        employeeModel.Tax = sqlDataReader.GetDouble(9);
+                        employeeModel.NetPay = sqlDataReader.GetDouble(10);
+                        employeeModel.StartDate = sqlDataReader.GetDateTime(11);
+                        employeeModel.City = sqlDataReader.GetString(12);
+                        employeeModel.Country = sqlDataReader.GetString(13);
+
+                        Console.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7}", employeeModel.EmployeeId, employeeModel.EmployeeName, employeeModel.PhoneNumber, employeeModel.Address, employeeModel.Gender, employeeModel.BasicPay, employeeModel.StartDate, employeeModel.City);
+                        Console.WriteLine();
+                    }
+
+                    //Closing the database reader object
+                    sqlDataReader.Close();
+
+                    //Closes the connection to the database
+                    connection.Close();
+                }
+                else
+                {
+                    Console.WriteLine("No records");
+                }
+            }
+        }
     }
 }

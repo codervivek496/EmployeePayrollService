@@ -10,6 +10,7 @@
             Console.WriteLine("1. Get details from database");
             Console.WriteLine("2. Add details to database");
             Console.WriteLine("3. Update details to database");
+            Console.WriteLine("4. Get details between specific date range from database");
             Console.WriteLine("0. Exit");
             Console.Write("Enter your choice : ");
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -25,6 +26,9 @@
                 case 3:
                     Update();
                     employeeRepo.GetEmployees();
+                    break;
+                case 4:
+                    employeeRepo.GetEmployeesInDateRange();
                     break;
                 case 0:
                     return;
