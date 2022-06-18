@@ -132,5 +132,42 @@ namespace EmployeePayrollService
                 connection.Close();
             }
         }
+
+        public bool UpdateEmployee(EmployeeModel employeeModel)
+        {
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand sqlCommand = new SqlCommand("SPUpdateEmployeeDetails", connection);
+
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                    sqlCommand.Parameters.AddWithValue("@EmployeeId", employeeModel.EmployeeId);
+                    sqlCommand.Parameters.AddWithValue("@BasicPay", employeeModel.BasicPay);
+
+                    connection.Open();
+
+                    var result = sqlCommand.ExecuteNonQuery();
+
+                    connection.Close();
+
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                //Closes the connection to the database
+                connection.Close();
+            }
+        }
     }
 }

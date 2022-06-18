@@ -9,6 +9,7 @@
 
             Console.WriteLine("1. Get details from database");
             Console.WriteLine("2. Add details to database");
+            Console.WriteLine("3. Update details to database");
             Console.WriteLine("0. Exit");
             Console.Write("Enter your choice : ");
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -19,6 +20,10 @@
                     break;
                 case 2:
                     AddDataToDataBase();
+                    employeeRepo.GetEmployees();
+                    break;
+                case 3:
+                    Update();
                     employeeRepo.GetEmployees();
                     break;
                 case 0:
@@ -60,6 +65,21 @@
             {
                 Console.WriteLine("Data is not inserted into database");
             }
+        }
+
+        //For updating the data in the database
+        public static void Update()
+        {
+            EmployeeModel employeeModel = new EmployeeModel();
+
+            employeeModel.EmployeeId = 9;
+            employeeModel.BasicPay = 3000000;
+
+            EmployeeRepo employeeRepo = new EmployeeRepo();
+
+            bool result = employeeRepo.UpdateEmployee(employeeModel);
+
+            Console.WriteLine(result == true ? "Data is updated into database" : "Data is not updated into database");
         }
     }
 }
