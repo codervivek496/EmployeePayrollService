@@ -137,12 +137,13 @@ namespace EmployeePayrollService
             {
                 using (connection)
                 {
-                    SqlCommand sqlCommand = new SqlCommand("SPUpdateEmployeeDetails", connection);
+                    SqlCommand sqlCommand = new SqlCommand("SPUpdateSalaryFromMultipleTables", connection);
 
                     sqlCommand.CommandType = CommandType.StoredProcedure;
 
-                    sqlCommand.Parameters.AddWithValue("@EmployeeId", employeeModel.EmployeeId);
-                    sqlCommand.Parameters.AddWithValue("@BasicPay", employeeModel.BasicPay);
+                    sqlCommand.Parameters.AddWithValue("@id", employeeModel.EmployeeId);
+                    sqlCommand.Parameters.AddWithValue("@salary", employeeModel.BasicPay);
+                    sqlCommand.Parameters.AddWithValue("@name", employeeModel.EmployeeName);
 
                     connection.Open();
 

@@ -85,7 +85,8 @@
         {
             EmployeeModel employeeModel = new EmployeeModel();
 
-            employeeModel.EmployeeId = 9;
+            employeeModel.EmployeeId = 2;
+            employeeModel.EmployeeName = "Lokesh";
             employeeModel.BasicPay = 3000000;
 
             EmployeeRepo employeeRepo = new EmployeeRepo();
