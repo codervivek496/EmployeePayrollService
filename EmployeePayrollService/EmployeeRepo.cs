@@ -25,7 +25,7 @@ namespace EmployeePayrollService
                 using (connection)
                 {
                     //SQL query to retrieve all data from the table employee_payroll
-                    string query = @"select * from employee_payroll";
+                    string query = @"select * from employee e join payroll p on e.salaryid = p.salary_Id join EmployeeDepartment ed on ed.employeeId = e.id join company c on c.company_id = e.company_id join departments d on d.departmentID = ed.departmentID";
 
                     //Executing the query
                     SqlCommand cmd = new SqlCommand(query, connection);
@@ -45,20 +45,18 @@ namespace EmployeePayrollService
                         {
                             employeeModel.EmployeeId = reader.GetInt32(0);
                             employeeModel.EmployeeName = reader.GetString(1);
-                            employeeModel.PhoneNumber = reader.GetString(2);
-                            employeeModel.Address = reader.GetString(3);
-                            employeeModel.Department = reader.GetString(4);
-                            employeeModel.Gender = Convert.ToChar(reader.GetString(5));
-                            employeeModel.BasicPay = reader.GetDouble(6);
-                            employeeModel.Deductions = reader.GetDouble(7);
-                            employeeModel.TaxablePay = reader.GetDouble(8);
-                            employeeModel.Tax = reader.GetDouble(9);
-                            employeeModel.NetPay = reader.GetDouble(10);
-                            employeeModel.StartDate = reader.GetDateTime(11);
-                            employeeModel.City = reader.GetString(12);
-                            employeeModel.Country = reader.GetString(13);
+                            employeeModel.StartDate = reader.GetDateTime(2);
+                            employeeModel.Gender = Convert.ToChar(reader.GetString(3));
+                            employeeModel.PhoneNumber = reader.GetInt64(4);
+                            employeeModel.Address = reader.GetString(5);
+                            employeeModel.Department = reader.GetString(19);
+                            employeeModel.BasicPay = reader.GetDouble(8);
+                            employeeModel.Deductions = reader.GetDouble(9);
+                            employeeModel.TaxablePay = reader.GetDouble(10);
+                            employeeModel.Tax = reader.GetDouble(11);
+                            employeeModel.NetPay = reader.GetDouble(12);
 
-                            Console.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7}", employeeModel.EmployeeId, employeeModel.EmployeeName, employeeModel.PhoneNumber, employeeModel.Address, employeeModel.Gender, employeeModel.BasicPay, employeeModel.StartDate, employeeModel.City);
+                            Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", employeeModel.EmployeeId, employeeModel.EmployeeName, employeeModel.PhoneNumber, employeeModel.Address, employeeModel.Gender, employeeModel.BasicPay, employeeModel.StartDate);
                             Console.WriteLine();
                         }
                     }
@@ -191,7 +189,7 @@ namespace EmployeePayrollService
 
                         employeeModel.EmployeeId = sqlDataReader.GetInt32(0);
                         employeeModel.EmployeeName = sqlDataReader.GetString(1);
-                        employeeModel.PhoneNumber = sqlDataReader.GetString(2);
+                        employeeModel.PhoneNumber = sqlDataReader.GetInt32(2);
                         employeeModel.Address = sqlDataReader.GetString(3);
                         employeeModel.Department = sqlDataReader.GetString(4);
                         employeeModel.Gender = Convert.ToChar(sqlDataReader.GetString(5));
@@ -259,6 +257,58 @@ namespace EmployeePayrollService
             {
                 Console.WriteLine("No records");
             }
+        }
+
+        public bool InsertingDataIntoMultipleTables(EmployeeModel employeeModel)
+        {
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("SPInsertData", connection);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Employeeid", employeeModel.EmployeeId);
+                    command.Parameters.AddWithValue("@phone_number", employeeModel.PhoneNumber);
+                    command.Parameters.AddWithValue("@address", employeeModel.Address);
+                    command.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    command.Parameters.AddWithValue("@company_id", employeeModel.companyId);
+                    command.Parameters.AddWithValue("@start", employeeModel.StartDate);
+                    command.Parameters.AddWithValue("@salaryid", employeeModel.salaryid);
+                    command.Parameters.AddWithValue("@basepay", employeeModel.BasicPay);
+                    command.Parameters.AddWithValue("@deductions", employeeModel.Deductions);
+                    command.Parameters.AddWithValue("@taxable_pay", employeeModel.TaxablePay);
+                    command.Parameters.AddWithValue("@tax", employeeModel.Tax);
+                    command.Parameters.AddWithValue("@netpay", employeeModel.NetPay);
+                    command.Parameters.AddWithValue("@name", employeeModel.EmployeeName);
+                    command.Parameters.AddWithValue("@departmentid", employeeModel.departmentid);
+                    command.Parameters.AddWithValue("@departmentname", employeeModel.Department);
+                    command.Parameters.AddWithValue("@noOfEmployees", employeeModel.noOfEmployees);
+                    command.Parameters.AddWithValue("@headofdepartment", employeeModel.headOfDepartment);
+                    command.Parameters.AddWithValue("@companyname", employeeModel.companyName);
+                    
+                    connection.Open();
+
+                    var result = command.ExecuteNonQuery();
+
+                    connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
         }
     }
 }

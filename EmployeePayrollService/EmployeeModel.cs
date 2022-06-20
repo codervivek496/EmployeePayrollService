@@ -10,7 +10,7 @@ namespace EmployeePayrollService
     {
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
-        public string PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Department { get; set; }
         public char Gender { get; set; }
@@ -22,6 +22,12 @@ namespace EmployeePayrollService
         public DateTime StartDate { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public int companyId { get; set; }
+        public int salaryid { get; set; }
+        public string companyName { get; set; }
+        public int departmentid { get; set; }
+        public string headOfDepartment { get; set; }
+        public int noOfEmployees { get; set; }
 
         public double TotalSalary { get; set; }
         public double AvgSalary { get; set; }
