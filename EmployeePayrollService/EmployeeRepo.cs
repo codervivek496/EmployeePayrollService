@@ -222,7 +222,7 @@ namespace EmployeePayrollService
 
         public void AggregateAndGrouping()
         {
-            string query = @"select gender, sum(BasicPay) TotalSalary, max(BasicPay) MaxSalary, min(BasicPay) MinSalary, avg(BasicPay) AvgSalary, count(BasicPay) CountGender from employee_payroll group by Gender";
+            string query = @"select employee.gender, sum(payroll.basepay) TotalSalary, max(payroll.basepay) MaxSalary, min(payroll.basepay) MinSalary, avg(payroll.basepay) AvgSalary, count(payroll.basepay) CountGender from employee join payroll on payroll.salary_id = employee.salaryid group by Gender";
 
             SqlCommand sqlCommand = new SqlCommand(query, connection);
 

@@ -7,12 +7,12 @@
             Console.WriteLine("\t\t\t\t\tWelcome to Employee Payroll Program\n\n");
             EmployeeRepo employeeRepo = new EmployeeRepo();
 
-            Console.WriteLine("1. Get details from database");
+            Console.WriteLine("1. Get details from multiple tables");
             Console.WriteLine("2. Add details to database");
-            Console.WriteLine("3. Update details to database");
+            Console.WriteLine("3. Update details to multiple tables");
             Console.WriteLine("4. Get details between specific date range from database");
-            Console.WriteLine("5. Get details in aggregate manner from database");
-            Console.WriteLine("6. Add details int multiple tables");
+            Console.WriteLine("5. Get details in aggregate manner from multiple tables");
+            Console.WriteLine("6. Add details into multiple tables");
             Console.WriteLine("0. Exit");
             Console.Write("Enter your choice : ");
             int choice = Convert.ToInt32(Console.ReadLine());
@@ -98,9 +98,8 @@
 
         public static void AddingDataInMultipleTable()
         {
-            //initializing employeemodel
             EmployeeModel employeeModel = new EmployeeModel();
-            //adding values to variables
+
             employeeModel.EmployeeId = 1;
             employeeModel.EmployeeName = "John";
             employeeModel.Gender = 'M';
@@ -119,11 +118,11 @@
             employeeModel.Department = "IT";
             employeeModel.headOfDepartment = "Gunther";
             employeeModel.noOfEmployees = 34;
-            //instatiating employee repository
+
             EmployeeRepo employeeRepo = new EmployeeRepo();
-            //passing employee model into method of employee repository class
+
             bool result = employeeRepo.InsertingDataIntoMultipleTables(employeeModel);
-            //printing message on the basis of bool result using ternary condition
+
             Console.WriteLine(result == true ? "Data inserted in database" : "Data is not inserted in database");
         }
     }
